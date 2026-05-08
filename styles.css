@@ -1,0 +1,343 @@
+/* ══════════════════════════════════════════════
+   Inline Note Popover — styles.css
+   ══════════════════════════════════════════════ */
+
+/* ── Trigger term ────────────────────────────── */
+
+.inl-term {
+  display: inline;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: underline dotted var(--color-accent, #7c6af7);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: color 120ms ease, text-decoration-style 120ms ease;
+}
+.inl-term:hover {
+  color: var(--color-accent, #7c6af7);
+  text-decoration-style: solid;
+}
+
+/* Badge style for injected terms where label doesn't appear in prose */
+.inl-term.inl-badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 1px 7px 2px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--color-accent, #7c6af7) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent, #7c6af7) 35%, transparent);
+  text-decoration: none;
+  margin-right: 6px;
+  vertical-align: middle;
+  color: var(--color-accent, #7c6af7);
+}
+.inl-term.inl-badge:hover {
+  background: color-mix(in srgb, var(--color-accent, #7c6af7) 22%, transparent);
+  text-decoration: none;
+}
+
+/* ── Arrow ───────────────────────────────────── */
+
+.inl-arrow {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;   /* arrow is cosmetic; don't block mouse events */
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+.inl-arrow.inl-visible { opacity: 1; }
+
+/* Popover is ABOVE — arrow points DOWN toward text */
+.inl-arrow.inl-arrow-down {
+  clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+  background: gray;
+  filter: drop-shadow(0 1px 0 var(--background-modifier-border, #ccc));
+}
+/* Popover is BELOW — arrow points UP toward text */
+.inl-arrow.inl-arrow-up {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background: gray;
+  filter: drop-shadow(0 -1px 0 var(--background-modifier-border, #ccc));
+}
+
+/* ── Popover shell ───────────────────────────── */
+
+.inl-popover {
+  --inl-bg: var(--background-primary);
+  --inl-border: var(--background-modifier-border);
+  --inl-radius: 10px;
+
+  position: fixed;
+  z-index: 10000;
+  width: var(--inl-width, 420px);
+  max-width: min(var(--inl-width, 420px), calc(100vw - 24px));
+  max-height: var(--inl-max-height, 460px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  background: var(--inl-bg);
+  border: 1px solid var(--inl-border);
+  border-radius: var(--inl-radius);
+  box-shadow:
+    0 2px 8px  rgba(0,0,0,.10),
+    0 8px 28px rgba(0,0,0,.16),
+    0 20px 48px rgba(0,0,0,.10);
+
+  opacity: 0;
+  transform: translateY(5px) scale(0.975);
+  transform-origin: top center;
+  transition:
+    opacity 150ms cubic-bezier(0.16,1,.3,1),
+    transform 150ms cubic-bezier(0.16,1,.3,1);
+  pointer-events: auto;
+}
+.inl-popover.inl-below {
+  transform-origin: bottom center;
+  transform: translateY(-5px) scale(0.975);
+}
+.inl-popover.inl-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Themes ──────────────────────────────────── */
+
+.inl-theme-dark {
+  --inl-bg: #1e1e2e;
+  --inl-border: #45475a;
+  --background-primary: #1e1e2e;
+  --background-secondary: #181825;
+  --background-modifier-border: #45475a;
+  --text-normal: #cdd6f4;
+  --text-muted: #a6adc8;
+  --color-accent: #cba6f7;
+  color: #cdd6f4;
+}
+.inl-theme-light {
+  --inl-bg: #ffffff;
+  --inl-border: #e0e0e0;
+  --background-primary: #ffffff;
+  --background-secondary: #f5f5f5;
+  --background-modifier-border: #e0e0e0;
+  --text-normal: #1a1a2e;
+  --text-muted: #55557a;
+  color: #1a1a2e;
+}
+
+/* Arrow theme sync */
+.inl-theme-dark  .inl-arrow,
+.inl-theme-dark  ~ .inl-arrow { background: #1e1e2e !important; }
+.inl-theme-light .inl-arrow,
+.inl-theme-light ~ .inl-arrow { background: #ffffff !important; }
+
+/* ── Toolbar ─────────────────────────────────── */
+
+.inl-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 7px 12px 6px;
+  border-bottom: 1px solid var(--inl-border);
+  background: color-mix(in srgb, var(--background-secondary, var(--background-primary)) 70%, transparent);
+  border-radius: var(--inl-radius) var(--inl-radius) 0 0;
+}
+.inl-title {
+  flex: 1;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.inl-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 100ms, color 100ms, border-color 100ms;
+  white-space: nowrap;
+}
+.inl-btn:hover {
+  background: color-mix(in srgb, var(--background-modifier-border) 40%, transparent);
+  color: var(--text-normal);
+  border-color: var(--background-modifier-border);
+}
+
+/* ── Scrollable body ─────────────────────────── */
+
+.inl-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px 16px 14px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--background-modifier-border) transparent;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text-normal);
+}
+.inl-body::-webkit-scrollbar { width: 4px; }
+.inl-body::-webkit-scrollbar-track { background: transparent; }
+.inl-body::-webkit-scrollbar-thumb { background: var(--background-modifier-border); border-radius: 99px; }
+
+/* ── Rendered markdown ───────────────────────── */
+
+.inl-body > :first-child { margin-top: 0 !important; }
+.inl-body > :last-child  { margin-bottom: 0 !important; }
+
+.inl-body h1 { font-size: 1.3em;  margin: 0 0 8px; }
+.inl-body h2 { font-size: 1.15em; margin: 12px 0 6px; }
+.inl-body h3 { font-size: 1.0em;  margin: 10px 0 4px; }
+.inl-body p  { margin: 0 0 8px; }
+
+.inl-body ul, .inl-body ol { margin: 0 0 8px; padding-left: 20px; }
+.inl-body li { margin-bottom: 3px; }
+.inl-body li > p { margin: 0; }
+
+.inl-body .task-list-item { list-style: none; margin-left: -4px; }
+.inl-body .task-list-item-checkbox { margin-right: 6px; cursor: default; }
+
+.inl-body code {
+  font-size: 12px;
+  font-family: var(--font-monospace);
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--background-secondary, #888) 80%, transparent);
+}
+.inl-body pre {
+  border-radius: 6px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  margin: 8px 0;
+  background: var(--background-secondary);
+}
+.inl-body pre code { background: none; padding: 0; font-size: 12px; }
+
+.inl-body img { max-width: 100%; border-radius: 6px; margin: 6px 0; display: block; }
+
+.inl-body .callout { border-radius: 6px; margin: 8px 0; padding: 8px 12px; font-size: 13px; }
+
+.inl-body hr { border: none; border-top: 1px solid var(--background-modifier-border); margin: 10px 0; }
+
+.inl-body blockquote {
+  border-left: 3px solid var(--color-accent, #7c6af7);
+  margin: 6px 0 6px 2px;
+  padding: 3px 12px;
+  color: var(--text-muted);
+}
+
+.inl-body table { border-collapse: collapse; width: 100%; font-size: 12.5px; margin: 8px 0; }
+.inl-body th, .inl-body td { border: 1px solid var(--background-modifier-border); padding: 4px 10px; text-align: left; }
+.inl-body th { background: color-mix(in srgb, var(--background-secondary, #888) 60%, transparent); font-weight: 600; }
+
+.inl-body mjx-container { font-size: 1em !important; }
+
+.inl-body a.internal-link { color: var(--color-accent, var(--link-color)); text-decoration: none; cursor: pointer; }
+.inl-body a.internal-link:hover { text-decoration: underline; }
+
+.inl-body .internal-embed { border: 1px solid var(--background-modifier-border); border-radius: 6px; padding: 8px 12px; margin: 6px 0; font-size: 12.5px; }
+
+/* ── Edit modal ──────────────────────────────── */
+
+.inl-edit-modal { padding: 4px; }
+.inl-edit-modal h3 { margin: 0 0 10px; }
+.inl-hint { font-size: 12px; color: var(--text-muted); margin: 0 0 8px; }
+.inl-edit-textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-monospace);
+  font-size: 12.5px;
+  line-height: 1.5;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  resize: vertical;
+  margin-bottom: 12px;
+}
+.inl-edit-buttons { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ── Insert modal ────────────────────────────── */
+
+.inl-mode-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: 13px; color: var(--text-muted); }
+.inl-mode-btn {
+  all: unset;
+  padding: 3px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--background-modifier-border);
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 120ms, color 120ms;
+}
+.inl-mode-btn:hover { background: color-mix(in srgb, var(--background-modifier-border) 30%, transparent); }
+.inl-mode-btn.inl-mode-active {
+  background: var(--interactive-accent, var(--color-accent, #7c6af7));
+  color: var(--text-on-accent, #fff);
+  border-color: transparent;
+}
+
+/* ── Settings ────────────────────────────────── */
+
+.inl-syntax-ref {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-family: var(--font-monospace);
+  font-size: 12.5px;
+  white-space: pre-wrap;
+  color: var(--text-normal);
+  margin-top: 6px;
+  line-height: 1.65;
+}
+
+/* ── Edit modal with embedded editor ─────────────────────────── */
+
+.inl-edit-modal {
+  width: 700px !important;
+  max-width: 90vw !important;
+}
+
+.inl-edit-modal .modal-content {
+  padding: 20px;
+}
+
+.inl-edit-header {
+  margin-bottom: 12px;
+}
+
+.inl-edit-header h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+
+.inl-edit-editorwrap {
+  margin-bottom: 14px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Hide the leaf chrome — we only want the editor surface */
+.inl-edit-editorwrap .view-header,
+.inl-edit-editorwrap .view-actions,
+.inl-edit-editorwrap .workspace-tab-header-container {
+  display: none !important;
+}
+
+.inl-edit-editorwrap .view-content {
+  height: 360px !important;
+}

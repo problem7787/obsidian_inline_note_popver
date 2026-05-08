@@ -1,0 +1,10 @@
+{
+  "id": "inline-note-popover",
+  "name": "Inline Note Popover",
+  "version": "11.0.0",
+  "minAppVersion": "1.0.0",
+  "description": "Embed full-featured mini-notes inline. Hover to see a richly rendered popover with images, LaTeX, checkboxes, callouts and more. Syntax: %%inline:Label|content%% or block %%inline-block:Label\\ncontent\\n%%",
+  "author": "Your Name",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}
