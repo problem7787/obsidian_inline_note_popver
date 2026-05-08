@@ -1,5 +1,5 @@
 
-# inline_note_popver
+# Obsidian tooltip note Popover
 obsidian plugin for inline notes as popover
 
 created this plugn with the help of claude, edited few things.
