@@ -10,7 +10,7 @@ But overall it works great.
 Example:
 Inline -> \`inl:CustomLabel|custom content\`,
 Bock ->
-\`\`\`inl-note
+```inl-note
 blockLabel
 ---
 # Heading
@@ -18,7 +18,7 @@ blockLabel
 
 <!-- <img src="https://freenaturestock.com/wp-content/uploads/freenaturestock-2339-1024x683.jpg" />, Images -->
 #tag1 #tag2
-\`\`\`
+```
 
 Note: always include raw text at the end of the content and dont use symbols like ` at the end of the text inside.
 
